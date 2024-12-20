@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+/* Global base styles */
+html {
+  font-size: clamp(12px, 1.5vw, 18px);
+  line-height: 1.6; /* Ensure consistent line height */
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 1rem; /* Add consistent spacing between elements */
+    padding: 1rem;
+  }
+
