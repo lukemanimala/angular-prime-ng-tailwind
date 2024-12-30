@@ -1,0 +1,60 @@
+.form-container {
+  display: inline-flex;
+  padding: 1rem 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+
+  }
+
+.custom-splitter {
+  height: 100vh; /* Full height splitter */
+  display: inline-flex;
+  flex-direction: column;
+}
+
+
+.p-splitterpanel {
+  display: flex; /* Ensure the panel behaves like a flex container */
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the left */
+  justify-content: flex-start; /* Align items to the top */
+}
+
+.p-splitterpanel-nested {
+  justify-content: flex-start !important; /* Override centering behavior */
+  align-items: flex-start !important; /* Align items to the left */
+}
+
+.radio-option {
+  display: flex;
+  align-items: center; /* Vertically align the radio button and label */
+  gap: 0.5rem; /* Add spacing between the radio button and the label */
+}
+
+.p-radiobutton {
+  display: flex !important; /* Ensure it behaves as a flex container */
+  align-items: center !important; /* Vertically align the circle and label */
+  justify-content: flex-start !important; /* Align everything to the left */
+  line-height: normal !important; /* Reset any abnormal line-height settings */
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-4 {
+  gap: 1rem; /* Adjust spacing as needed */
+}
+
+.items-center {
+  align-items: center; /* Vertically align radio button and label */
+}
+
+.ml-2 {
+  margin-left: 0.5rem; /* Add space between radio button and label */
+}

@@ -1,22 +1,244 @@
 <main class="main">
-  <div class="form-container">
+  <p-splitter [style]="{ height: '100%' }" styleClass="custom-splitter">
+    <!-- Panel 1 -->
+    <ng-template pTemplate>
+      <div class="form-container">
+        <h2>Form 1</h2>
 
-    <p-floatLabel variant="on">
-      <input pInputText id="text_input" [(ngModel)]="value3" autocomplete="off" />
-      <label for="text_input">Enter Text</label>
-    </p-floatLabel>
-  
-    <p-floatLabel variant="on">
-      <p-datepicker
-        [(ngModel)]="dateValue"
-        inputId="date_picker"
-        showIcon
-        iconDisplay="input"
-      ></p-datepicker>
-      <label for="date_picker">Select Date</label>
-    </p-floatLabel>
+        <!-- Country Selection Dropdown -->
+        <p-floatLabel class="w-full md:w-56" variant="on">
+          <p-select
+            [(ngModel)]="selectedCountry"
+            inputId="country_select"
+            [options]="countries"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            styleClass="w-full"
+          >
+            <ng-template #selectedItem let-selectedOption>
+              <div class="flex items-center gap-2">
+                <div>{{ selectedOption.emoji }} {{ selectedOption.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-country #item>
+              <div class="flex items-center gap-2">
+                <div>{{ country.emoji }} {{ country.name }}</div>
+              </div>
+            </ng-template>
+          </p-select>
+          <label for="country_select">Select a Country</label>
+        </p-floatLabel>
+        <p>Selected Country: {{ selectedCountry?.emoji }} {{ selectedCountry?.name }}</p>
 
-    <button pButton type="button" label="Submit"></button>
+        <!-- City Selection Dropdown -->
+        <p-floatLabel class="w-full md:w-56" variant="on">
+          <p-select
+            [(ngModel)]="value4"
+            inputId="city_select"
+            [options]="cities"
+            optionLabel="name"
+            styleClass="w-full"
+          ></p-select>
+          <label for="city_select">Select City</label>
+        </p-floatLabel>
+        <p>Selected City: {{ value4?.name }}</p>
 
-  </div>
+        <!-- Checkbox for Food Categories -->
+        <div>
+          <h3>Select Food Categories</h3>
+          <div *ngFor="let category of categories" class="flex items-center">
+            <p-checkbox
+              [value]="category"
+              [(ngModel)]="selectedCategories"
+              inputId="{{ 'category_' + category }}"
+            ></p-checkbox>
+            <label [for]="'category_' + category" class="ml-2">{{ category }}</label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button pButton type="button" label="Submit"></button>
+      </div>
+    </ng-template>
+
+    <!-- Panel 2 -->
+    <ng-template pTemplate>
+      <div class="form-container">
+        <h2>Form 2</h2>
+
+        <!-- Input Text Field -->
+        <p-floatLabel variant="on">
+          <input pInputText id="text_input2" [(ngModel)]="value2" autocomplete="off" />
+          <label for="text_input2">Enter Text</label>
+        </p-floatLabel>
+
+        <!-- Date Picker -->
+        <p-floatLabel variant="on">
+          <p-datepicker
+            [(ngModel)]="dateValue2"
+            inputId="date_picker2"
+            showIcon
+            iconDisplay="input"
+          ></p-datepicker>
+          <label for="date_picker2">Select Date</label>
+        </p-floatLabel>
+
+        <!-- Radio Button for Food Ingredients -->
+        <div>
+          <h3>Select Food Ingredient</h3>
+          <div *ngFor="let category of categories" class="flex items-center">
+            <p-radiobutton
+              name="pizza"
+              [value]="category"
+              [(ngModel)]="selectedIngredient"
+              inputId="{{ 'ingredient_' + category }}"
+            ></p-radiobutton>
+            <label [for]="'ingredient_' + category" class="ml-2">{{ category }}</label>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button pButton type="button" label="Submit"></button>
+      </div>
+    </ng-template>
+  </p-splitter>
+
+
+<div style="padding: 1rem;">
+  <button style="background-color: var(--blue-500); color: white; border: none; padding: 1rem; border-radius: 5px;">
+    Button with --blue-500 Inline
+  </button>
+</div>
+
+<p-tabs value="0">
+  <p-tablist>
+      <p-tab value="0">Table with multi-select and sort</p-tab>
+      <p-tab value="1">Tab 2</p-tab>
+      <p-tab value="2">Tab 3</p-tab>
+      <p-tab value="3">Tab 4</p-tab>
+      <p-tab value="4">Tab 5</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+      <!-- Tab 1 -->
+
+      <p-tabpanel value="0">
+
+        <p-table
+    class="custom-table"
+    [(selection)]="selectedCustomers"
+    [multiSortMeta]="[{field: 'status', order: -1}, {field: 'country.name', order: 1}]"
+    [tableStyle]="{ 'min-width': '50rem'}"
+    [sortMode]="'multiple'"
+    [loading]="loading"
+    #dt
+    [value]="customers"
+    dataKey="id"
+    [globalFilterFields]="['name', 'country.name', 'status', 'verified']"
+>
+    <!-- Global Search Bar and Action Button -->
+    <ng-template #caption>
+        <div class="flex justify-between items-center">
+            <!-- Action Button -->
+            <button
+                pButton
+                type="button"
+                label="Action"
+                icon="pi pi-bolt"
+                [disabled]="!selectedCustomers || selectedCustomers.length === 0"
+                (click)="performAction()"
+                class="mr-1"
+            ></button>
+            <!-- Global Search -->
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    type="text"
+                    (input)="onInput($event)"
+                    placeholder="Search keyword"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+
+    <!-- Table Header -->
+    <ng-template #header>
+        <tr>
+            <th style="width: 1px">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="name" style="width: 20%">
+                Name <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="country.name" style="width: 20%">
+                Country <p-sortIcon field="country.name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="status" style="width: 20%">
+                Status <p-sortIcon field="status"></p-sortIcon>
+            </th>
+            <th pSortableColumn="verified" style="width: 20%">
+                Verified <p-sortIcon field="verified"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+
+    <!-- Table Body -->
+    <ng-template #body let-customer>
+        <tr [pSelectableRow]="customer">
+            <td style="width: 1px;">
+                <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+            </td>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.country.name }}</td>
+            <td>{{ customer.status }}</td>
+            <td>
+                <i
+                    class="pi"
+                    [ngClass]="{
+                        'text-green-500 pi-check-circle': customer.verified,
+                        'text-red-500 pi-times-circle': !customer.verified
+                    }"
+                ></i>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+      </p-tabpanel>
+
+      <!-- Tab 2 -->
+      <p-tabpanel value="1">
+        <div class="bg-primary text-surface-500 p-4">
+          This is a test for Tailwind + PrimeNG integration.
+        </div>
+      </p-tabpanel>
+
+      <!-- Tab 3 -->
+      <p-tabpanel value="2">
+          <p class="m-0">
+              Placeholder content for Tab 3. Customize as needed.
+          </p>
+      </p-tabpanel>
+
+      <!-- Tab 4 -->
+      <p-tabpanel value="3">
+          <p class="m-0">
+              Placeholder content for Tab 4. Replace with your desired content.
+          </p>
+      </p-tabpanel>
+
+      <!-- Tab 5 -->
+      <p-tabpanel value="4">
+          <p class="m-0">
+              Placeholder content for Tab 5. Add relevant details here.
+          </p>
+      </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+
 </main>
